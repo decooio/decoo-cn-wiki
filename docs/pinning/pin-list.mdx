@@ -1,0 +1,60 @@
+---
+id: pinList
+title: ''
+---
+
+## Endpoint
+https://api.decoo-cn.cloud/pinning/pinList
+
+## Description
+Retrieve list of pinned content by the requested user.
+
+## Type
+GET
+
+## Headers
+```
+"Authorization": "Bearer <YOUR_API_KEY>"
+```
+
+## Request
+
+You can add parameters to the request URL to customize your query.
+
+Available query parameters:
+- *sort*: Sort results by date.
+  - *ASC*: Sort by ascending dates.
+  - *DESC*: Sort by descending dates. This is the default value.
+- *start-date (must be in ISO_8601 format)*: Exclude pin records that were pinned before the passed datetime.
+- *end-date (must be in ISO_8601 format)*: Exclude pin records that were pinned after the passed datetime.
+- *offset*: Record offset for the records to return. Default to 0.
+- *limit*: Limit amount of records to return. Default to 5, and max is 1000.
+
+
+## Response
+```json
+{
+  "Count": "<Total count of pinned contents based on your filter criteria>",
+  "Pins": [
+    {
+      "Id": "<Pin Id>",
+      "PinHash": "<Pinned content hash>",
+      "PinSize": "<Size (in bytes) of the pinned content>",
+      "PinDate": "<Timestamp (in ISO_8601 format) of the when the content was pinned.>",
+      "Metadata": {
+        "name": "<Optional name specified when pinning the content>"
+      }
+    },
+    {
+      ...
+    }
+  ]
+}
+```
+
+## Curl Example
+```sh
+curl -X GET "https://api.decoo-cn.cloud/pinning/pinList?sort=DESC&offset=0&limit=10&start-date=2021-01-01T00:00:00.000+08:00" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json"
+```

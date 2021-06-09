@@ -1,0 +1,54 @@
+---
+id: retrievingFiles
+title: ''
+---
+
+# Retrieving Files
+
+This is a brief tutorial on how to retrieve files from IPFS.
+
+## Basics
+
+As IPFS is an open and distributed network for storing files, you can always retrieve (access or/and download) your files which have been already pinned to IPFS.
+
+Fundamentally, there are two ways to retrieve your files form IPFS--**Using a public IPFS gateway**, or **building an IPFS gateway yourself**.
+
+## What is an IPFS gateway?
+
+A gateway is basically a device that bridging two networks. An IPFS gateway, to this definition, constructs bridges between IPFS network and the world outside. 
+
+For example, as many popular browsers (Google Chrome, Microsoft Edge) cannot natively support IPFS, a gateway is needed that helps you access the IPFS network from your browser (via HTTP).
+
+If you want to know more about IPFS gateway, please refer to [this page](https://docs.ipfs.io/concepts/ipfs-gateway/#overview) from IPFS Docs.
+
+## Retrieve files from a public gateway
+
+You can retrieve files from a public gateway, totally free of charge. There are dozens of public gateways available worldwide, and of course their performance varies because they are not paid services.
+
+Check the IPFS's official [gateway checker](https://ipfs.github.io/public-gateway-checker/) and get a full list of available registered public gateways. The list is sorted by the real-time latency with the lowerest on the top. The latency may be affected by the provider's capability, location, current throughput, and other factors. 
+
+Decoo also provides a [Decoo public gateway](https://ipfs.decoo.io) and you can find it on gateway checker. Remember, you can resort to any public gateway to do the retrieving as long as it is available, whatever pinning service you use.
+
+## Build your own IPFS gateway
+
+No matter who deploys an IPFS gateway, we always suggest that you should use a gateway which is close to you so that better performance can be achieved. Also, for those who run private networks to meet demands from specific business scenarios, privacy, security and customizability may be of great concern. This is why we recommand building your own **local gateway** or **private gateway service** as a gateway solution, rather than relying a **public gateway service** as mentioned above.
+
+### Local gateways
+
+Your machine runs an IPFS node (which could be [IPFS Desktop](https://github.com/ipfs/ipfs-desktop) or other forms, like [CLI](https://docs.ipfs.io/install/command-line/#system-requirements)) and host a gateway as a local service, e.g. at `localhost:8080`. This is all about a local gateway.
+
+### Private gateways
+
+A private gateway service is technically no different from a public gateway service, except that it is configured to limited access or other customizations by the operator. For example, the operator may configure read-only access to its users, and chooses the preferred domain resolution style.
+
+### Gateway configuration
+
+There is a config file, which is a JSON document, that tells your deployed IPFS node how to act as a gateway. For [go-ipfs](https://github.com/ipfs/go-ipfs) implementation, refer to this [ipfs-go config tutorial](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#gateway) to configure your own IPFS gateway.
+
+Special Note: it is recommanded to add a list of your frequently-visited IPFS nodes into the **peer list** of your IPFS node. This will greatly help to improve performance when retrieving files from the listed nodes.
+
+
+
+
+
+

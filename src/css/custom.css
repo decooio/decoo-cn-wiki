@@ -1,0 +1,98 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: rgb(33, 175, 144);
+  --ifm-color-primary-darker: rgb(31, 165, 136);
+  --ifm-color-primary-darkest: rgb(26, 136, 112);
+  --ifm-color-primary-light: rgb(70, 203, 174);
+  --ifm-color-primary-lighter: rgb(102, 212, 189);
+  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-code-font-size: 95%;
+
+  /* navbar */
+  --ifm-navbar-background-color: #2D2D2D;
+  --ifm-navbar-height: 100px;
+  --ifm-navbar-link-color: #ffffff;
+  --ifm-navbar-padding-horizontal: 0px;
+  /* menu */
+  --ifm-menu-link-padding-horizontal: 30px;
+  --doc-sidebar-width: 256px;
+  --ifm-toc-border-color: rgba(0,0,0,0);
+  --ifm-menu-color: #666666;
+  --ifm-menu-link-padding-vertical: 8px;
+  --ifm-menu-color-active: #2CC8C2;
+  --ifm-menu-color-background-active: rgba(0,0,0,0);
+  --ifm-menu-color-background-hover: rgba(0,0,0,0);
+
+  /* container */
+  --ifm-spacing-horizontal: 78px;
+
+  --ifm-alert-padding-horizontal: calc(var(--ifm-spacing-horizontal) * 0.35);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+.navbar__brand{
+  margin-left: 47px;
+}
+.navbar__brand:hover{
+  transition: unset;
+  color: white;
+}
+.navbar__brand img{
+  width: 110px;
+  height: 37px;
+  margin-right: unset;
+
+}
+.navbar__title{
+  font-size: 24px;
+  margin-left: 18px;
+  height: 37px;
+  line-height: 52px;
+}
+
+
+/* menu list */
+
+.menu{
+  background: white;
+  padding-top: 24px !important;
+}
+.menu__link:hover{
+  color: #333333;
+}
+
+.menu__link--active:hover{
+  color: #2CC8C2 !important;
+}
+
+/* container */
+.container{
+  background: #F8F8F8;
+  margin: unset;
+  width: 100%;
+  max-width: unset !important;
+}
+
+/* pagination-nav */
+/*.pagination-nav{*/
+/*  display: none;*/
+/*}*/
+
+/* markdown content navbar */
+.container .row .col.col-3{
+  padding: 0 20px !important;
+}

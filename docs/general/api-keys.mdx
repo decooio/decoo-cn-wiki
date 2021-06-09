@@ -1,0 +1,36 @@
+---
+id: apiKeys
+title: ''
+---
+
+## API Keys
+
+API Keys are used to access Decoo API. When registering an account, an API Key is automatically generated for you. Currently, there is only one API Key for an account, with access to all Decoo APIs. But please be aware that we may allow users to create and manage multiple API Keys with more granular permission controls by themselves in the future.
+
+## Important
+
+Each API Key is actually a JWT token which acts on behalf of your account when accessing Decoo API. Be sure to keep it private.
+
+## Connecting to Decoo API
+
+The base url of Decoo API endpoint is: https://api.decoo-cn.cloud
+
+To authenticate with this endpoint, you need to include your API Key as an Authorization header for all your API requests in the following format:
+```
+"Authorization": "Bearer <YOUR_API_KEY>"
+```
+
+You can use following curl request to test your API Key against the endpoint:
+
+```bash
+curl -X GET "https://api.decoo-cn.cloud/ping" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json"
+```
+
+On success, it should return with 200 and following body:
+```json
+{
+  "Success": true
+}
+```

@@ -1,0 +1,68 @@
+---
+id: pinningWithApi
+title: ''
+---
+
+# Pinning with API
+
+This is a brief tutorial on how to use API to pin your files to IPFS.
+
+## Basics
+
+There two catogories of APIs that can support IPFS Pinning and other pinning-related activities via HTTP requests.
+
+One category is **Decoo Pinning API**, which is offered specifically by Decoo, as a pinning service provider.
+
+The other category is **IPFS Pinning Service API**, which is a standardized API by IPFS that helps developers integrite third-party's pinning service via IPFS's native remote pin. Decoo already provided an implementation of this [IPFS Pinning Services API](pinning-services-api.mdx).
+
+## Decoo API
+
+Decoo offers several APIs that help you pin your content to IPFS in customers' desired forms and manners:
+
+**pinFile** Upload and pin a specified file to IPFS.
+
+**pinByHash** Pin an existing IPFS content by the given content identifier.
+
+**pinJobs** Retrieve list of pinning jobs that are currently in the queue for the requested user. For any API that exercises asynchronous pin (i.e. pinByHash and pinFromS3), a pinJob will be generated and waiting to be processed by a periodically running job.
+
+**pinList** Retrieve list of pinned content by the requested user.
+
+For more detailed description towards each individual Decoo API, please refer to the [Pinning API](pinning/pin-file.mdx) section in the Wiki page.
+
+## API Keys
+
+API Keys are used to access Decoo API. When registering an account, an API Key is automatically generated for you. Currently, there is only one API Key for an account, with access to all Decoo APIs. But please be aware that we may allow users to create and manage multiple API Keys with more granular permission controls by themselves in the future.
+
+Each API Key is actually a `JWT token` which acts on behalf of your account when accessing Decoo API. Be sure to keep it private.
+
+## Connect to Decoo API
+
+The base url of Decoo API endpoint is: https://api.decoo-cn.cloud
+
+To authenticate with this endpoint, you need to include your API Key as an Authorization header for all your API requests in the following format:
+```
+"Authorization": "Bearer <YOUR_API_KEY>"
+```
+
+You can use following curl request to test your API Key against the endpoint:
+
+```bash
+curl -X GET "https://api.decoo-cn.cloud/ping" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json"
+```
+
+On success, it should return with 200 and the following body:
+```json
+{
+  "Success": true
+}
+```
+
+If token is invalid, it should return following body:
+```json
+{
+  "Code": 401,
+  "Message": "Invalid token"
+}
+```

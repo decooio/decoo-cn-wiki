@@ -1,0 +1,61 @@
+---
+id: pinJobs
+title: ''
+---
+
+## Endpoint
+https://api.decoo-cn.cloud/pinning/pinJobs
+
+## Description
+Retrieve list of pinning jobs that are currently in the queue for the requested user.
+
+## Type
+GET
+
+## Headers
+```
+"Authorization": "Bearer <YOUR_API_KEY>"
+```
+
+## Request
+
+You can add parameters to the request URL to customize your query.
+
+Available query parameters:
+- *pin-hash*: Retrieve pin job record for a specific hash.
+- *sort*: Sort results by date.
+  - *ASC*: Sort by ascending dates.
+  - *DESC*: Sort by descending dates. This is the default value.
+- *status*: Filter pin jobs in the pinning queue by status. If not passed, all status jobs will be queried. Possible status includes:
+  - *queued*: Job is added, but haven't been picked up for processing.
+  - *pinning*: Content is being pinned.
+  - *pinned*: Content has been successfully pinned to Decoo.
+  - *failed*: Failed to pin content by the hash. Note that failed jobs may be retried within 24 hours, and status may be updated accordingly.
+
+- *offset*: Record offset for the records to return. Default to 0.
+- *limit*: Limit amount of records to return. Default to 5, and max is 1000.
+
+
+## Response
+```json
+{
+  "Count": "<Total count of pin jobs based on your filter criteria>",
+  "Jobs": [
+    {
+      "Id": "<Job Id>",
+      "Status": "<Job Status>",
+      "PinHash": "<Content hash to pin by this job>"
+    },
+    {
+      ...
+    }
+  ]
+}
+```
+
+## Curl Example
+```sh
+curl -X GET "https://api.decoo-cn.cloud/pinning/pinJobs?sort=DESC&status=queued&offset=0&limit=10" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json"
+```

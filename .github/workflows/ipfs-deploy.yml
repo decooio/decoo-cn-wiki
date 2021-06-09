@@ -1,0 +1,49 @@
+name: Ipfs Deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.DECOO_PAT }}
+
+      - name: install and build
+        run: |
+          yarn install
+          yarn build
+          ls -l build
+
+      - name: upload to ipfs use crust
+        id: upload
+        uses: crustio/ipfs-upload-action@v1.0.2
+        with:
+          path: 'build'
+          crust-secret-key: ${{ secrets.CRUST_SECRET_KEY }}
+
+      - name: pin to crust
+        uses: crustio/ipfs-crust-action@v1.0.8
+        with:
+          cid:  ${{ steps.upload.outputs.hash }}
+          seeds: ${{ secrets.CRUST_SEEDS }}
+
+      - name: update dnslink
+        uses: XueMoMo/actions-coudflare-dns@v1.0.1
+        id: dnslink
+        with:
+          name: "wiki-ipfs.decoo-cn.cloud"
+          cid: ${{ steps.upload.outputs.hash }}
+          token: ${{ secrets.CLOUDFLARE_TOKEN }}
+          zone: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+
+#      - name: Deploy
+#        uses: hpcodecraft/action-deploy-workspace-to-repo@v2.2
+#        env:
+#          GITHUB_ACCESS_TOKEN: ${{ secrets.DECOO_PAT }}
+#          SRC_FOLDER: build
+#          DEST_OWNER: decooio
+#          DEST_REPO: decoo-wiki-deploy
+#          DEST_BRANCH: main
+#          DEST_FOLDER: docs

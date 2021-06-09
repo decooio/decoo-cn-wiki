@@ -1,0 +1,43 @@
+---
+id: pinningServicesApi
+title: ''
+---
+
+Decoo offers support for the [IPFS Pinning Services API Spec](https://ipfs.github.io/pinning-services-api-spec/).
+
+## Endpoint
+https://api.decoo-cn.cloud/psa
+
+## Authentication
+The Pinning Services API Spec uses the Bearer Token method for authentication, you can provide an authentication header using your API Key just like accessing other Decoo APIs:
+```
+"Authorization": "Bearer <YOUR_API_KEY>"
+```
+
+## Configuring Decoo in the IPFS CLI
+You can also pin to Decoo directly from the IPFS CLI using the IPFS command.
+
+To add Decoo credentials:
+```sh
+ipfs pin remote service add decoo https://api.decoo-cn.cloud/psa <YOUR_API_KEY>
+```
+
+To pin a CID to Decoo under a human-readable name:
+```sh
+ipfs pin remote add --service=decoo --name=<FILE_NAME> <CID_TO_PIN>
+```
+
+To list successful pins:
+```sh
+ipfs pin remote ls --service=decoo
+```
+
+To list pending pins:
+```sh
+ipfs pin remote ls --service=decoo --status=queued,pinning,failed
+```
+
+For more commands and general help:
+```sh
+ipfs pin remote --help
+```
