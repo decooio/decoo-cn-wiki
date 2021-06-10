@@ -4,7 +4,7 @@ title: ''
 ---
 
 ## Endpoint
-https://api.decoo-cn.cloud/pinning/pinFile
+https://api.decoo-cloud.cn:9443/pinning/pinFile
 
 ## Description
 Upload and pin a file to Decoo's Ipfs nodes, which will also eventually be stored to Crust network.
@@ -74,7 +74,7 @@ An example *decooMetadata* is like below:
 
 ## Curl Example
 ```sh
-curl -X POST "https://api.decoo-cn.cloud/pinning/pinFile" \
+curl -X POST "https://api.decoo-cloud.cn:9443/pinning/pinFile" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@<YOUR_FILE_PATH>" \

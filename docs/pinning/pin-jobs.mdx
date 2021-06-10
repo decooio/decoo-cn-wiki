@@ -4,7 +4,7 @@ title: ''
 ---
 
 ## Endpoint
-https://api.decoo-cn.cloud/pinning/pinJobs
+https://api.decoo-cloud.cn:9443/pinning/pinJobs
 
 ## Description
 Retrieve list of pinning jobs that are currently in the queue for the requested user.
@@ -55,7 +55,7 @@ Available query parameters:
 
 ## Curl Example
 ```sh
-curl -X GET "https://api.decoo-cn.cloud/pinning/pinJobs?sort=DESC&status=queued&offset=0&limit=10" \
+curl -X GET "https://api.decoo-cloud.cn:9443/pinning/pinJobs?sort=DESC&status=queued&offset=0&limit=10" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json"
 ```
