@@ -13,7 +13,7 @@ Each API Key is actually a JWT token which acts on behalf of your account when a
 
 ## Connecting to Decoo API
 
-The base url of Decoo API endpoint is: https://api.decoo-cloud.cn:9443
+The base url of Decoo API endpoint is: https://api.decoo-cloud.cn
 
 To authenticate with this endpoint, you need to include your API Key as an Authorization header for all your API requests in the following format:
 ```
@@ -23,7 +23,7 @@ To authenticate with this endpoint, you need to include your API Key as an Autho
 You can use following curl request to test your API Key against the endpoint:
 
 ```bash
-curl -X GET "https://api.decoo-cloud.cn:9443/ping" \
+curl -X GET "https://api.decoo-cloud.cn/ping" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json"
 ```

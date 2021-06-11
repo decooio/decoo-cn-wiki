@@ -4,7 +4,7 @@ title: ''
 ---
 
 ## Endpoint
-https://api.decoo-cloud.cn:9443/pinning/pinFromS3
+https://api.decoo-cloud.cn/pinning/pinFromS3
 
 ## Description
 Asynchronously pin a file from AWS S3 compatible bucket. Following Principle Of Least Privilege (PLOP), Decoo backend will download the bucket object using a presigned URL before the preset expiry date.
@@ -92,7 +92,7 @@ A sample request could be like:
 
 ## Curl Example
 ```sh
-curl -X POST "https://api.decoo-cloud.cn:9443/pinning/pinFromS3" \
+curl -X POST "https://api.decoo-cloud.cn/pinning/pinFromS3" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
   -F file=<YOUR_FILE>
