@@ -8,7 +8,7 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'decooio', // Usually your GitHub org/user name.
-  projectName: 'decoo-wiki', // Usually your repo name.
+  projectName: 'decoo-cn-wiki', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'wiki',
@@ -33,13 +33,13 @@ module.exports = {
           routeBasePath: '/',
           // Please change this to your repo.
 
-          editUrl: 'https://github.com/decooio/decoo-wiki/edit/main/',
+          editUrl: 'https://github.com/decooio/decoo-cn-wiki/edit/main/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/decooio/decoo-wiki/edit/main/',
+            'https://github.com/decooio/decoo-cn-wiki/edit/main/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

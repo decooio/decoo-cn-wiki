@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
+    if: github.repository == 'decooio/decoo-cn-wiki'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
