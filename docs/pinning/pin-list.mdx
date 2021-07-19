@@ -3,13 +3,13 @@ id: pinList
 title: ''
 ---
 
-## Endpoint
+## URL
 https://api.decoo-cloud.cn/pinning/pinList
 
-## Description
-Retrieve list of pinned content by the requested user.
+## 描述
+获取用户存储的文件列表。
 
-## Type
+## 请求类型
 GET
 
 ## Headers
@@ -19,30 +19,29 @@ GET
 
 ## Request
 
-You can add parameters to the request URL to customize your query.
+可以通过一些参数对查询结果进行过滤：
 
-Available query parameters:
-- *sort*: Sort results by date.
-  - *ASC*: Sort by ascending dates.
-  - *DESC*: Sort by descending dates. This is the default value.
-- *start-date (must be in ISO_8601 format)*: Exclude pin records that were pinned before the passed datetime.
-- *end-date (must be in ISO_8601 format)*: Exclude pin records that were pinned after the passed datetime.
-- *offset*: Record offset for the records to return. Default to 0.
-- *limit*: Limit amount of records to return. Default to 5, and max is 1000.
+- *sort*: 对查询结果按照日期进行排序。
+  - *ASC*: 升序排列。
+  - *DESC*: 降序排列 (默认行为)。
+- *start-date (必须是 ISO_8601 格式)*: 该时间点之前存储的文件不返回。
+- *end-date (必须是 ISO_8601 格式)*: 该时间点之后存储的文件不返回。
+- *offset*: 分页获取的起始下标，默认为0。
+- *limit*: 分页获取的数量，默认为5，最大值为1000。
 
 
 ## Response
 ```json
 {
-  "Count": "<Total count of pinned contents based on your filter criteria>",
+  "Count": "<文件数量 (根据查询条件)>",
   "Pins": [
     {
       "Id": "<Pin Id>",
-      "PinHash": "<Pinned content hash>",
-      "PinSize": "<Size (in bytes) of the pinned content>",
-      "PinDate": "<Timestamp (in ISO_8601 format) of the when the content was pinned.>",
+      "PinHash": "<文件CID>",
+      "PinSize": "<文件大小 (字节)>",
+      "PinDate": "<文件存储时间 (ISO_8601 格式)>",
       "Metadata": {
-        "name": "<Optional name specified when pinning the content>"
+        "name": "<自定义文件名>"
       }
     },
     {
@@ -52,7 +51,7 @@ Available query parameters:
 }
 ```
 
-## Curl Example
+## Curl请求示例
 ```sh
 curl -X GET "https://api.decoo-cloud.cn/pinning/pinList?sort=DESC&offset=0&limit=10&start-date=2021-01-01T00:00:00.000+08:00" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \

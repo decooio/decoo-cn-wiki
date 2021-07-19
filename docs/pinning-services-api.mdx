@@ -3,41 +3,45 @@ id: pinningServicesApi
 title: ''
 ---
 
-Decoo offers support for the [IPFS Pinning Services API Spec](https://ipfs.github.io/pinning-services-api-spec/).
+Decoo提供符合 [IPFS Pinning Services API Spec](https://ipfs.github.io/pinning-services-api-spec/) 标准的远端存储服务API。
 
-## Endpoint
+## URL
+
 https://api.decoo-cloud.cn/psa
 
-## Authentication
-The Pinning Services API Spec uses the Bearer Token method for authentication, you can provide an authentication header using your API Key just like accessing other Decoo APIs:
+## 认证
+
+IPFS Pinning Services API Spec 使用 Bearer Token 的方式进行认证，您可以使用 Decoo 生成的 API Secret 来访问 Decoo 提供的远端存储服务API：
+
 ```
 "Authorization": "Bearer <YOUR_API_KEY>"
 ```
 
-## Configuring Decoo in the IPFS CLI
-You can also pin to Decoo directly from the IPFS CLI using the IPFS command.
+## 在IPFS命令行里添加并使用Decoo
 
-To add Decoo credentials:
+您也可以直接用 *ipfs pin remote* 命令访问 Decoo 远端存储服务。
+
+添加 Decoo 远端存储服务：
 ```sh
 ipfs pin remote service add decoo https://api.decoo-cloud.cn/psa <YOUR_API_KEY>
 ```
 
-To pin a CID to Decoo under a human-readable name:
+上传文件：
 ```sh
 ipfs pin remote add --service=decoo --name=<FILE_NAME> <CID_TO_PIN>
 ```
 
-To list successful pins:
+查看成功存储的文件：
 ```sh
 ipfs pin remote ls --service=decoo
 ```
 
-To list pending pins:
+查看处理中或者存储失败的文件：
 ```sh
 ipfs pin remote ls --service=decoo --status=queued,pinning,failed
 ```
 
-For more commands and general help:
+查看帮助信息：
 ```sh
 ipfs pin remote --help
 ```

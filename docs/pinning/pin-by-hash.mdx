@@ -3,18 +3,17 @@ id: pinByHash
 title: ''
 ---
 
-## Endpoint
+## URL
 https://api.decoo-cloud.cn/pinning/pinByHash
 
-## Description
-Asynchronously pin an IPFS content to Decoo cloud by its content identifier. Each API call will generate a *pin job*, which will be picked and processed by a periodically running job. You can query the status of the job using [pinJobs](pinning/pin-jobs.mdx) API.
-
+## 描述
+通过CID异步地上传IPFS文件到Decoo Cloud。每一次API调用会生成一个*pin job*，由Decoo Cloud后台定时处理。您可以调用 [pinJobs](pinning/pin-jobs.mdx) API查询这些Job的状态。
 
 :::note
-In order for the job to be successfully processed, the content for the hash you provide must already be pinned by another node on the IPFS network.
+为了确保文件能够成功地拉取并存储到Decoo Cloud，该文件应该事先Pin在某个IPFS节点。
 :::
 
-## Type
+## 请求类型
 POST
 
 ## Headers
@@ -24,33 +23,33 @@ POST
 
 ## Body
 
-The basic request body should be like:
+Request body 格式如下：
 ```json
 {
-  "hashToPin": "<Hash value of the content to pin>"
+  "hashToPin": "<文件CID>"
 }
 ```
 
-Optionally, some metadata could be attached:
+在上传文件的同时，可以附加一些metadata。这些metadata可以在调用 [pinList](pinning/pin-list.mdx) 查询文件列表时做为过滤条件。
 ```json
 "decooMetadata": {
-  "name": "<A custom name of the content>"
+  "name": "<自定义文件名>"
 }
 ```
 
 ## Response
 ```json
 {
-  "HashToPin": "<This is the hash provided to Decoo to pin>",
-  "JobId": "<This is the id of the generated pin job>",
-  "JobStatus": "<Current status of the pin job.  If the request was successful, the status should be 'queued'>"
+  "HashToPin": "<上传文件的IPFS CID>",
+  "JobId": "<Pin Job的ID>",
+  "JobStatus": "<Pin Job的当前状态。如果请求成功，当前状态应该为'queued'>"
 }
 ```
 
-## Curl Example
+## Curl请求示例
 ```sh
 curl -X POST "https://api.decoo-cloud.cn/pinning/pinByHash" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
-  -d '{"hashToPin": "<HASH_TO_PIIN>", "decooMetadata": {"name": "My File"}}'
+  -d '{"hashToPin": "<HASH_TO_PIIN>", "decooMetadata": {"name": "我的文件"}}'
 ```

@@ -9,6 +9,10 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'decooio', // Usually your GitHub org/user name.
   projectName: 'decoo-cn-wiki', // Usually your repo name.
+  i18n: {
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans'],
+  },
   themeConfig: {
     navbar: {
       title: 'wiki',

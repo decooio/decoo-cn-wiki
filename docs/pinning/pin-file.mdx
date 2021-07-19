@@ -3,17 +3,17 @@ id: pinFile
 title: ''
 ---
 
-## Endpoint
+## URL
 https://api.decoo-cloud.cn/pinning/pinFile
 
-## Description
-Upload and pin a file to Decoo's Ipfs nodes, which will also eventually be stored to Crust network.
+## 描述
+上传文件到Decoo Cloud，并存储到IPFS网络。
 
 :::note
-To provide consistent programming model with [pinByHash](pinning/pin-by-hash.mdx), a *pin job* is also generated for each API call. Likewise, you can query the status of the job using [pinJobs](pinning/pin-jobs.mdx) API.
+为了提供和 [pinByHash](pinning/pin-by-hash.mdx) 一致的编程模型，每次调用 *pinFile* 时也会自动生成一个*pin job*。同样地，您也可以调用 [pinJobs](pinning/pin-jobs.mdx) API来查询这些 *pin job* 的状态。
 :::
 
-## Type
+## 请求类型
 POST
 
 ## Headers
@@ -22,62 +22,43 @@ POST
 ```
 
 ## Body
-The body of this request needs to take the form of a multipart/form-data with the following key / values:
+API请求的Body应该为 *multipart/form-data* 格式，并包含以下键值对：
 
 **file**<br/>
-The first key in the form-data body should be named "file", and the value should be the file you're attempting to upload to Decoo.
-
-**decooOptions (Optional)**
-
-Developer can pass some additional options to control how the content is pinned to Decoo.
-
-- *wrapWithDirectory*: Whether to wrap the content inside of a directory when adding to IPFS. This allows users to retrieve content via a filename instead of a hash. Valid options are:
-  - *true*
-  - *false*
-
-  The default value is *false*.
-
-An example *decooOptions* is like below:
-```json
-"decooOptions": {
-  "wrapWithDirectory": true
-}
-```
-
+表单中的第一个Key应该为“file”，Value为要上传的文件。
   
 **decooMetadata (Optional)**
 
-You can also include some metadata when pinning content to Decoo cloud. The metadata can later be used for easy querying on what you've pinned with [pinList](pinning/pin-list.mdx) request.
+在上传文件的同时，可以附加一些metadata。这些metadata可以在调用 [pinList](pinning/pin-list.mdx) 查询文件列表时做为过滤条件。
 
-*decooMetadata* takes following form:
+*decooMetadata* 格式如下:
 ```json
 {
-  "name": "<A custom name. If not provided, the original name of the content (if feasible) will be used.>"
+  "name": "<自定义文件名。如果不提供，则默认使用原文件名 (如果能获取到的话)。>"
 }
 ```
 
-An example *decooMetadata* is like below:
+*decooMetadata* 示例如下:
 ```json
 "decooOptions": {
-  "name": "My File"
+  "name": "我的文件"
 }
 ```
 
 ## Response
 ```json
 {
-  "PinHash": "<This is the Ipfs multi-hash provided back for your file>",
-  "PinSize": "<This is the size (in bytes) of the pinned content>",
-  "PinDate": "<This is the timestamp for your content pinning (represented in ISO 8601 format)>"
+  "PinHash": "<上传文件的IPFS CID>",
+  "PinSize": "<文件大小 (字节)>",
+  "PinDate": "<文件存储到IPFS的时间戳 (ISO 8601格式)>"
 }
 ```
 
-## Curl Example
+## Curl请求示例
 ```sh
 curl -X POST "https://api.decoo-cloud.cn/pinning/pinFile" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@<YOUR_FILE_PATH>" \
-  -F 'decooOptions="{\"wrapWithDirectory\": true}"' \
-  -F 'decooMetadata="{\"name\": \"My File\"}"'
+  -F 'decooMetadata="{\"name\": \"我的文件\"}"'
 ```

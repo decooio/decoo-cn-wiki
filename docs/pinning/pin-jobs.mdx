@@ -3,13 +3,13 @@ id: pinJobs
 title: ''
 ---
 
-## Endpoint
+## URL
 https://api.decoo-cloud.cn/pinning/pinJobs
 
-## Description
-Retrieve list of pinning jobs that are currently in the queue for the requested user.
+## 描述
+获取当前用户的Pin Job列表。
 
-## Type
+## 请求类型
 GET
 
 ## Headers
@@ -19,32 +19,31 @@ GET
 
 ## Request
 
-You can add parameters to the request URL to customize your query.
+可以通过一些参数来对查询结果进行过滤：
 
-Available query parameters:
-- *pin-hash*: Retrieve pin job record for a specific hash.
-- *sort*: Sort results by date.
-  - *ASC*: Sort by ascending dates.
-  - *DESC*: Sort by descending dates. This is the default value.
-- *status*: Filter pin jobs in the pinning queue by status. If not passed, all status jobs will be queried. Possible status includes:
-  - *queued*: Job is added, but haven't been picked up for processing.
-  - *pinning*: Content is being pinned.
-  - *pinned*: Content has been successfully pinned to Decoo.
-  - *failed*: Failed to pin content by the hash. Note that failed jobs may be retried within 24 hours, and status may be updated accordingly.
+- *pin-hash*: 只获取指定CID的Pin Job。
+- *sort*: 对查询结果按照日期进行排序。
+  - *ASC*: 升序排列。
+  - *DESC*: 降序排列 (默认行为)。
+- *status*: 只返回指定状态的Pin Job。如果未指定，则所有状态的Job都会返回。Pin Job可能的状态如下：
+  - *queued*: Job已创建，但是Decoo Cloud尚未处理。
+  - *pinning*: Job正在被Decoo Cloud处理。
+  - *pinned*: Job处理成功，文件已成功存储至IPFS。
+  - *failed*: Job处理失败。失败的Job在24小时之内会被尝试重新处理，如果成功则状态会更新。
 
-- *offset*: Record offset for the records to return. Default to 0.
-- *limit*: Limit amount of records to return. Default to 5, and max is 1000.
+- *offset*: 分页获取的起始下标，默认为0。
+- *limit*: 分页获取的数量，默认为5，最大值为1000。
 
 
 ## Response
 ```json
 {
-  "Count": "<Total count of pin jobs based on your filter criteria>",
+  "Count": "<Pin Job的数量 (根据查询条件)>",
   "Jobs": [
     {
       "Id": "<Job Id>",
-      "Status": "<Job Status>",
-      "PinHash": "<Content hash to pin by this job>"
+      "Status": "<Job状态>",
+      "PinHash": "<Job对应的文件CID>"
     },
     {
       ...
@@ -53,7 +52,7 @@ Available query parameters:
 }
 ```
 
-## Curl Example
+## Curl请求示例
 ```sh
 curl -X GET "https://api.decoo-cloud.cn/pinning/pinJobs?sort=DESC&status=queued&offset=0&limit=10" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \

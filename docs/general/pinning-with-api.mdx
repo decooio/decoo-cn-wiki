@@ -3,63 +3,63 @@ id: pinningWithApi
 title: ''
 ---
 
-# Pinning with API
+# 使用API存储文件
 
-This is a brief tutorial on how to use API to pin your files to IPFS.
+这里简要介绍下如何使用API将文件存储到IPFS。
 
-## Basics
+## 基础
 
-There two catogories of APIs that can support IPFS Pinning and other pinning-related activities via HTTP requests.
-
-One category is **Decoo Pinning API**, which is offered specifically by Decoo, as a pinning service provider.
-
-The other category is **IPFS Pinning Service API**, which is a standardized API by IPFS that helps developers integrite third-party's pinning service via IPFS's native remote pin. Decoo already provided an implementation of this [IPFS Pinning Services API](pinning-services-api.mdx).
+Decoo提供了两套HTTP API以支持用户存储文件。一套是Decoo自定义和实现的API；另一套是[IPFS远端存储服务API](pinning-services-api.mdx)，该套API根据IPFS提供的[SEPC](https://ipfs.github.io/pinning-services-api-spec/)实现，支持用户通过 *ipfs pin remote* 命令进行交互。
 
 ## Decoo API
 
-Decoo offers several APIs that help you pin your content to IPFS in customers' desired forms and manners:
+### 上传
 
-**pinFile** Upload and pin a specified file to IPFS.
+Decoo支持两种方式上传文件并存储到IPFS，您可以根据需要自行选择：
 
-**pinByHash** Pin an existing IPFS content by the given content identifier.
+**pinFile** 上传本地文件到Decoo Cloud，并存储到IPFS网络。
 
-**pinJobs** Retrieve list of pinning jobs that are currently in the queue for the requested user. For any API that exercises asynchronous pin (i.e. pinByHash and pinFromS3), a pinJob will be generated and waiting to be processed by a periodically running job.
+**pinByHash** 通过文件的IPFS CID存储。每次API调用都会生成一个Pin Job，由Decoo Cloud定期处理，您可以通过[pinJobs](pinning/pin-jobs.mdx) API实时查询Job状态。
 
-**pinList** Retrieve list of pinned content by the requested user.
+### 查询
+Decoo支持查询存储Job及已存储的文件列表：
 
-For more detailed description towards each individual Decoo API, please refer to the [Pinning API](pinning/pin-file.mdx) section in the Wiki page.
+**pinJobs** 获取用户的存储Job列表。每一次[pinFile](pinning/pin-file.mdx)或者[pinByHash](pinning/pin-by-hash.mdx)调用，都会生成一个Pin Job。
+
+**pinList** 获取用户存储的文件列表。
+
+详细信息，请参考本站[API列表](pinning/pin-file.mdx)部分。
 
 ## API Keys
 
-API Keys are used to access Decoo API. When registering an account, an API Key is automatically generated for you. Currently, there is only one API Key for an account, with access to all Decoo APIs. But please be aware that we may allow users to create and manage multiple API Keys with more granular permission controls by themselves in the future.
+API Key是Decoo的API认证机制。用户注册成功后，系统会自动为用户生成API Key。目前，一个用户只有一个API Key，可以用它来访问所有的API。
 
-Each API Key is actually a `JWT token` which acts on behalf of your account when accessing Decoo API. Be sure to keep it private.
+每一个API Key其实是一个[JWT](https://jwt.io/) Token，它代表用户来认证并访问Decoo API。请务必保管好您的API Key，不要与他人分享。
 
-## Connect to Decoo API
+## 使用Decoo API
 
-The base url of Decoo API endpoint is: https://api.decoo-cloud.cn
+Decoo API的Base URL为：https://api.decoo-cloud.cn
 
-To authenticate with this endpoint, you need to include your API Key as an Authorization header for all your API requests in the following format:
+作为身份认证，您需要在调用Decoo API时将您的API Key按照以下格式包含在Header中：
 ```
 "Authorization": "Bearer <YOUR_API_KEY>"
 ```
 
-You can use following curl request to test your API Key against the endpoint:
-
+您可以使用curl命令测试API的连通性及您Token的有效性：
 ```bash
 curl -X GET "https://api.decoo-cloud.cn/ping" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json"
 ```
 
-On success, it should return with 200 and the following body:
+如果调用成功，该请求会返回状态码200及如下消息体：
 ```json
 {
   "Success": true
 }
 ```
 
-If token is invalid, it should return following body:
+如果调用失败，则会返回：
 ```json
 {
   "Code": 401,

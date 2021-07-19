@@ -28,18 +28,18 @@ module.exports = {
     {
       type: 'doc',
       id: 'introduction',
-      label: 'Introduction'
+      label: '介绍'
     },
 
     {
       type: 'category',
-      label: 'General',
+      label: '概览',
       collapsed: false,
       items: [
         {
           type: 'doc',
           id: 'general/gettingStarted',
-          label: 'Getting Started'
+          label: '开始'
         },
         // {
         //   type: 'doc',
@@ -49,12 +49,12 @@ module.exports = {
         {
           type: 'doc',
           id: 'general/pinningWithApi',
-          label: 'Pinning with API'
+          label: '使用API存储文件'
         },
         {
           type: 'doc',
           id: 'general/retrievingFiles',
-          label: 'Retrieving Files'
+          label: '读取文件'
         },
         {
           type: 'doc',
@@ -65,7 +65,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Pinning API',
+      label: 'API列表',
       collapsed: false,
       items: [
         {
@@ -98,7 +98,7 @@ module.exports = {
     {
       type: 'doc',
       id: 'pinningServicesApi',
-      label: 'IPFS Remote Pinning Services API'
+      label: 'IPFS远端存储服务API'
     }
 
   ]
