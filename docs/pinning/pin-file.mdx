@@ -7,10 +7,10 @@ title: ''
 https://api.decoo-cloud.cn/pinning/pinFile
 
 ## 描述
-上传文件到Decoo Cloud，并存储到IPFS网络。
+上传文件到 Decoo Cloud，并存储到 IPFS 网络。
 
 :::note
-为了提供和 [pinByHash](pinning/pin-by-hash.mdx) 一致的编程模型，每次调用 *pinFile* 时也会自动生成一个*pin job*。同样地，您也可以调用 [pinJobs](pinning/pin-jobs.mdx) API来查询这些 *pin job* 的状态。
+为了提供和 [pinByHash](pinning/pin-by-hash.mdx) 一致的编程模型，每次调用 *pinFile* 时也会自动生成一个*pin job*。同样地，您也可以调用 [pinJobs](pinning/pin-jobs.mdx) API 来查询这些 *pin job* 的状态。
 :::
 
 ## 请求类型
@@ -22,14 +22,14 @@ POST
 ```
 
 ## Body
-API请求的Body应该为 *multipart/form-data* 格式，并包含以下键值对：
+API 请求的 Body 应该为 *multipart/form-data* 格式，并包含以下键值对：
 
 **file**<br/>
-表单中的第一个Key应该为“file”，Value为要上传的文件。
+表单中的第一个 Key 应该为 “file”，Value 为要上传的文件。
   
 **decooMetadata (Optional)**
 
-在上传文件的同时，可以附加一些metadata。这些metadata可以在调用 [pinList](pinning/pin-list.mdx) 查询文件列表时做为过滤条件。
+在上传文件的同时，可以附加一些 metadata。这些 metadata 可以在调用 [pinList](pinning/pin-list.mdx) 查询文件列表时做为过滤条件。
 
 *decooMetadata* 格式如下:
 ```json
@@ -48,13 +48,13 @@ API请求的Body应该为 *multipart/form-data* 格式，并包含以下键值�
 ## Response
 ```json
 {
-  "PinHash": "<上传文件的IPFS CID>",
+  "PinHash": "<上传文件的 IPFS CID>",
   "PinSize": "<文件大小 (字节)>",
-  "PinDate": "<文件存储到IPFS的时间戳 (ISO 8601格式)>"
+  "PinDate": "<文件存储到 IPFS 的时间戳 (ISO 8601格式)>"
 }
 ```
 
-## Curl请求示例
+## Curl 请求示例
 ```sh
 curl -X POST "https://api.decoo-cloud.cn/pinning/pinFile" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \

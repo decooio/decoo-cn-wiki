@@ -3,49 +3,49 @@ id: pinningWithApi
 title: ''
 ---
 
-# 使用API存储文件
+# 使用 API 存储文件
 
-这里简要介绍下如何使用API将文件存储到IPFS。
+这里简要介绍下如何使用 API 将文件存储到 IPFS。
 
 ## 基础
 
-Decoo提供了两套HTTP API以支持用户存储文件。一套是Decoo自定义和实现的API；另一套是[IPFS远端存储服务API](pinning-services-api.mdx)，该套API根据IPFS提供的[SEPC](https://ipfs.github.io/pinning-services-api-spec/)实现，支持用户通过 *ipfs pin remote* 命令进行交互。
+Decoo 提供了两套 HTTP API 以支持用户存储文件。一套是 Decoo 自定义和实现的 API；另一套是 [IPFS远端存储服务API](pinning-services-api.mdx)，该套 API 根据 IPFS 提供的 [SEPC](https://ipfs.github.io/pinning-services-api-spec/) 实现，支持用户通过 *ipfs pin remote* 命令进行交互。
 
 ## Decoo API
 
 ### 上传
 
-Decoo支持两种方式上传文件并存储到IPFS，您可以根据需要自行选择：
+Decoo 支持两种方式上传文件并存储到 IPFS，您可以根据需要自行选择：
 
-**pinFile** 上传本地文件到Decoo Cloud，并存储到IPFS网络。
+**pinFile** 上传本地文件到 Decoo Cloud，并存储到 IPFS 网络。
 
-**pinByHash** 通过文件的IPFS CID存储。每次API调用都会生成一个Pin Job，由Decoo Cloud定期处理，您可以通过[pinJobs](pinning/pin-jobs.mdx) API实时查询Job状态。
+**pinByHash** 通过文件的 IPFS CID 存储。每次 API 调用都会生成一个 Pin Job，由 Decoo Cloud 定期处理，您可以通过 [pinJobs](pinning/pin-jobs.mdx) API 实时查询 Job 状态。
 
 ### 查询
-Decoo支持查询存储Job及已存储的文件列表：
+Decoo 支持查询存储 Job 及已存储的文件列表：
 
-**pinJobs** 获取用户的存储Job列表。每一次[pinFile](pinning/pin-file.mdx)或者[pinByHash](pinning/pin-by-hash.mdx)调用，都会生成一个Pin Job。
+**pinJobs** 获取用户的存储 Job 列表。每一次 [pinFile](pinning/pin-file.mdx) 或者 [pinByHash](pinning/pin-by-hash.mdx) 调用，都会生成一个 Pin Job。
 
 **pinList** 获取用户存储的文件列表。
 
-详细信息，请参考本站[API列表](pinning/pin-file.mdx)部分。
+详细信息，请参考本站 [API列表](pinning/pin-file.mdx) 部分。
 
 ## API Keys
 
-API Key是Decoo的API认证机制。用户注册成功后，系统会自动为用户生成API Key。目前，一个用户只有一个API Key，可以用它来访问所有的API。
+API Key 是 Decoo 的 API 认证机制。用户注册成功后，系统会自动为用户生成 API Key。目前，一个用户只有一个 API Key，可以用它来访问所有的 API。
 
-每一个API Key其实是一个[JWT](https://jwt.io/) Token，它代表用户来认证并访问Decoo API。请务必保管好您的API Key，不要与他人分享。
+每一个 API Key其实是一个 [JWT](https://jwt.io/) Token，它代表用户来认证并访问 Decoo API。请务必保管好您的 API Key，不要与他人分享。
 
-## 使用Decoo API
+## 使用 Decoo API
 
-Decoo API的Base URL为：https://api.decoo-cloud.cn
+Decoo API 的 Base URL 为：https://api.decoo-cloud.cn
 
-作为身份认证，您需要在调用Decoo API时将您的API Key按照以下格式包含在Header中：
+作为身份认证，您需要在调用 Decoo API 时将您的 API Key 按照以下格式包含在 Header 中：
 ```
 "Authorization": "Bearer <YOUR_API_KEY>"
 ```
 
-您可以使用curl命令测试API的连通性及您Token的有效性：
+您可以使用 curl 命令测试 API 的连通性及您 Token 的有效性：
 ```bash
 curl -X GET "https://api.decoo-cloud.cn/ping" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \

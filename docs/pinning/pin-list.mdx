@@ -37,7 +37,7 @@ GET
   "Pins": [
     {
       "Id": "<Pin Id>",
-      "PinHash": "<文件CID>",
+      "PinHash": "<文件 CID>",
       "PinSize": "<文件大小 (字节)>",
       "PinDate": "<文件存储时间 (ISO_8601 格式)>",
       "Metadata": {
@@ -51,7 +51,7 @@ GET
 }
 ```
 
-## Curl请求示例
+## Curl 请求示例
 ```sh
 curl -X GET "https://api.decoo-cloud.cn/pinning/pinList?sort=DESC&offset=0&limit=10&start-date=2021-01-01T00:00:00.000+08:00" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \

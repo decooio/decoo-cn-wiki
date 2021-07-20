@@ -7,7 +7,7 @@ title: ''
 https://api.decoo-cloud.cn/pinning/pinJobs
 
 ## 描述
-获取当前用户的Pin Job列表。
+获取当前用户的 Pin Job 列表。
 
 ## 请求类型
 GET
@@ -21,15 +21,15 @@ GET
 
 可以通过一些参数来对查询结果进行过滤：
 
-- *pin-hash*: 只获取指定CID的Pin Job。
+- *pin-hash*: 只获取指定 CID 的 Pin Job。
 - *sort*: 对查询结果按照日期进行排序。
   - *ASC*: 升序排列。
   - *DESC*: 降序排列 (默认行为)。
-- *status*: 只返回指定状态的Pin Job。如果未指定，则所有状态的Job都会返回。Pin Job可能的状态如下：
-  - *queued*: Job已创建，但是Decoo Cloud尚未处理。
-  - *pinning*: Job正在被Decoo Cloud处理。
-  - *pinned*: Job处理成功，文件已成功存储至IPFS。
-  - *failed*: Job处理失败。失败的Job在24小时之内会被尝试重新处理，如果成功则状态会更新。
+- *status*: 只返回指定状态的 Pin Job。如果未指定，则所有状态的 Job 都会返回。Pin Job 可能的状态如下：
+  - *queued*: Job 已创建，但是 Decoo Cloud 尚未处理。
+  - *pinning*: Job 正在被 Decoo Cloud 处理。
+  - *pinned*: Job 处理成功，文件已成功存储至 IPFS。
+  - *failed*: Job 处理失败。失败的 Job 在24小时之内会被尝试重新处理，如果成功则状态会更新。
 
 - *offset*: 分页获取的起始下标，默认为0。
 - *limit*: 分页获取的数量，默认为5，最大值为1000。
@@ -38,12 +38,12 @@ GET
 ## Response
 ```json
 {
-  "Count": "<Pin Job的数量 (根据查询条件)>",
+  "Count": "<Pin Job 的数量 (根据查询条件)>",
   "Jobs": [
     {
       "Id": "<Job Id>",
-      "Status": "<Job状态>",
-      "PinHash": "<Job对应的文件CID>"
+      "Status": "<Job 状态>",
+      "PinHash": "<Job 对应的文件 CID>"
     },
     {
       ...
@@ -52,7 +52,7 @@ GET
 }
 ```
 
-## Curl请求示例
+## Curl 请求示例
 ```sh
 curl -X GET "https://api.decoo-cloud.cn/pinning/pinJobs?sort=DESC&status=queued&offset=0&limit=10" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
