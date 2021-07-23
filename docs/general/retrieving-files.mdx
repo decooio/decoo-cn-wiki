@@ -3,49 +3,48 @@ id: retrievingFiles
 title: ''
 ---
 
-# Retrieving Files
+# 取回文件
 
-This is a brief tutorial on how to retrieve files from IPFS.
+出于分布式文件系统的特性考虑，我们专门介绍如何从分布式文件系统（此处我们仅采用IPFS协议）取回文件。
 
-## Basics
+## 基础
 
-As IPFS is an open and distributed network for storing files, you can always retrieve (access or/and download) your files which have been already pinned to IPFS.
+由于IPFS是一项开源、开放的网络，因此您总是可以从IPFS网络取回（或访问、下载）您的文件。
 
-Fundamentally, there are two ways to retrieve your files form IPFS--**Using a public IPFS gateway**, or **building an IPFS gateway yourself**.
+总体来说，您可以选择两种方式完成文件的取回：**使用公共网关** 以及 **构建自有网关**
 
-## What is an IPFS gateway?
+## 什么是网关
 
-A gateway is basically a device that bridging two networks. An IPFS gateway, to this definition, constructs bridges between IPFS network and the world outside. 
+网关（Gateway）是联系两个网络的桥梁。对于IPFS网关，以此定义出发，可理解为联系IPFS网络和外部网络（如基于HTTP协议）的桥梁。
 
-For example, as many popular browsers (Google Chrome, Microsoft Edge) cannot natively support IPFS, a gateway is needed that helps you access the IPFS network from your browser (via HTTP).
+例如，大多数Web浏览器是无法原生地支持IPFS协议的，那么这些浏览器就需要一个网关来实现对IPFS网络的访问。因此，网关实际上假设了IPFS与HTTP之间的转换通道。
 
-If you want to know more about IPFS gateway, please refer to [this page](https://docs.ipfs.io/concepts/ipfs-gateway/#overview) from IPFS Docs.
+## 使用公共网关取回文件
 
-## Retrieve files from a public gateway
+理论上，您可以利用任何IPFS公共网关取回文件，并且大多是免费的。当然，不同的网关在访问速度、安全性、可用性等方面存在差异。
 
-You can retrieve files from a public gateway, totally free of charge. There are dozens of public gateways available worldwide, and of course their performance varies because they are not paid services.
+您可以访问IPFS官方提供的[gateway checker](https://ipfs.github.io/public-gateway-checker/) 查看目前提供服务的公共网关。你可以看到根据实施连接延迟排序的网关列表。
 
-Check the IPFS's official [gateway checker](https://ipfs.github.io/public-gateway-checker/) and get a full list of available registered public gateways. The list is sorted by the real-time latency with the lowerest on the top. The latency may be affected by the provider's capability, location, current throughput, and other factors. 
+Decoo也提供自己的公共网关[Decoo public gateway](https://ipfs.decoo.io) ，并且您可以在前述的Gateway Checker中看到它。注意，您仍然可以使用任何公共网关（只要可用且访问速度足够快），无论您是否使用Decoo的云存储服务。
 
-Decoo also provides a [Decoo public gateway](https://ipfs.decoo.io) and you can find it on gateway checker. Remember, you can resort to any public gateway to do the retrieving as long as it is available, whatever pinning service you use.
+## 构建自用网关
 
-## Build your own IPFS gateway
+无论公共网关是谁人所架设，我们都建议您使用物理距离更近的网关以获得更好的性能表现。对于承载大规模商用需求的用户而言，网关的可用性、安全性、可控性就是重要考虑。对此，我们建议您建立自用的网关。
 
-No matter who deploys an IPFS gateway, we always suggest that you should use a gateway which is close to you so that better performance can be achieved. Also, for those who run private networks to meet demands from specific business scenarios, privacy, security and customizability may be of great concern. This is why we recommand building your own **local gateway** or **private gateway service** as a gateway solution, rather than relying a **public gateway service** as mentioned above.
+### 本地网关（Local Gateways）
 
-### Local gateways
+本地网关是指，您的机器运行一个IPFS节点（可以是Desktop或CLI等形式）并指定localhost端口（例如 `localhost:8080`）作为一项本地服务。
 
-Your machine runs an IPFS node (which could be [IPFS Desktop](https://github.com/ipfs/ipfs-desktop) or other forms, like [CLI](https://docs.ipfs.io/install/command-line/#system-requirements)) and host a gateway as a local service, e.g. at `localhost:8080`. This is all about a local gateway.
+### 私有网关（Private gateways）
 
-### Private gateways
+在技术意义上，私有网关与前述本地网关没有任何区别。唯一差别在于私有网关被设置为只面向特定的访问者提供特定权限网关服务。例如，网关可以指定仅向持有权限的用户提供只读的服务，以及指定特定的域名解析方式（Domain resolution style）。
 
-A private gateway service is technically no different from a public gateway service, except that it is configured to limited access or other customizations by the operator. For example, the operator may configure read-only access to its users, and chooses the preferred domain resolution style.
+### 网关配置（Configuration）
 
-### Gateway configuration
+我们建议您参考来自[go-ipfs](https://github.com/ipfs/go-ipfs) implementation的配置方案。网关配置文件本质上是一个JSON文件，因此很容易进行配置。配置文件设置可参考此处 [ipfs-go config tutorial](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#gateway) 。
 
-There is a config file, which is a JSON document, that tells your deployed IPFS node how to act as a gateway. For [go-ipfs](https://github.com/ipfs/go-ipfs) implementation, refer to this [ipfs-go config tutorial](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#gateway) to configure your own IPFS gateway.
+提示：我们建议您在网关配置文件中，加入与该网关经常发生联系的其他网关（或IPFS节点）到您的**Peer List**中，这将大大有助于提高相应的访问速度。
 
-Special Note: it is recommanded to add a list of your frequently-visited IPFS nodes into the **peer list** of your IPFS node. This will greatly help to improve performance when retrieving files from the listed nodes.
 
 
 
