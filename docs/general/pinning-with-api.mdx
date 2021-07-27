@@ -81,7 +81,7 @@ curl -X GET "https://api.decoo-cloud.cn/endpoint/list" \
 2. Client 调用 *Endpont* API，附上 Access Token 作为认证信息
 3. *Endpoint* 收到 Client 请求后，调用 Decoo Cloud API 来验证 Access Token 是否有效。如果有效，则认证通过，继续处理 Client 请求；否则，返回 401 错误。
 
-另外，Access Token 的有效期为30分钟。Access Token 过期后，Client 应该调用 Decoo Cloud API 申请新的 Access Token。
+另外，Access Token 的有效期为2个小时。Access Token 过期后，Client 应该调用 Decoo Cloud API 申请新的 Access Token。
 
 申请 Access Token：
 ```sh
