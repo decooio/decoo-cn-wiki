@@ -41,6 +41,11 @@ module.exports = {
           id: 'general/gettingStarted',
           label: '开始'
         },
+        {
+          type: 'doc',
+          id: 'general/architecture',
+          label: 'Decoo 多端架构'
+        },
         // {
         //   type: 'doc',
         //   id: 'general/apiKeys',
@@ -49,7 +54,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'general/pinningWithApi',
-          label: '使用API存储文件'
+          label: 'API 认证机制'
         },
         {
           type: 'doc',
@@ -65,40 +70,42 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'API列表',
+      label: 'Endpoint API',
       collapsed: false,
       items: [
         {
           type: 'doc',
           id: 'pinning/pinFile',
-          label: 'pinFile'
+          label: '上传文件'
         },
         {
           type: 'doc',
           id: 'pinning/pinByHash',
-          label: 'pinByHash'
-        },
-        // {
-        //   type: 'doc',
-        //   id: 'pinning/pinFromS3',
-        //   label: 'pinFromS3'
-        // },
-        {
-          type: 'doc',
-          id: 'pinning/pinJobs',
-          label: 'pinJobs'
-        },
+          label: '通过 CID 上传文件'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Decoo Cloud API',
+      collapsed: false,
+      items: [
         {
           type: 'doc',
           id: 'pinning/pinList',
-          label: 'pinList'
+          label: '查询文件列表'
         },
+        {
+          type: 'doc',
+          id: 'pinning/pinJobs',
+          label: '查询上传任务'
+        }
       ]
     },
     {
       type: 'doc',
       id: 'pinningServicesApi',
-      label: 'IPFS远端存储服务API'
+      label: 'IPFS 远端存储服务 API'
     }
 
   ]

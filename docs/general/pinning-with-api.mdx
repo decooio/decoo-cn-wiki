@@ -3,42 +3,24 @@ id: pinningWithApi
 title: ''
 ---
 
-# 使用 API 存储文件
+## 简介
 
-本文档介绍如何使用API将文件存储到Decoo云存储服务平台。
+Decoo 提供了 HTTP API 以支持用户使用 Decoo 的服务。在 “[一云多端](general/architecture.mdx)” 的架构下，*Decoo Cloud* 和 *Endpoint* 都部署了 HTTP API 以提供不同类型的服务。根据自身职能不同，两者的 API 也采取了不同的认证机制。
 
-## 基础
+具体来讲，
+- **Decoo Cloud** 提供除 *pinFile* / *pinByHash* 等文件上传功能之外的所有 API，采用 API Key 作为认证机制。
+- **Endpoint** 提供 *pinFile* / *pinByHash* 等文件上传 API，采用 OAuth2 认证机制。
 
-Decoo 提供了两套 HTTP API 以支持用户存储文件。一套是 Decoo 自定义和实现的 API；另一套是 [IPFS远端存储服务API](pinning-services-api.mdx)，该套 API 根据 IPFS 提供的 [SEPC](https://ipfs.github.io/pinning-services-api-spec/) 实现，支持用户通过 *ipfs pin remote* 命令进行交互。
+## Decoo Cloud
 
-## Decoo API
-
-### 上传
-
-Decoo 支持两种方式上传文件并存储到 IPFS，您可以根据需要自行选择：
-
-**pinFile** 上传本地文件到 Decoo Cloud，并存储到 IPFS 网络。
-
-**pinByHash** 通过文件的 IPFS CID 存储。每次 API 调用都会生成一个 Pin Job，由 Decoo Cloud 定期处理，您可以通过 [pinJobs](pinning/pin-jobs.mdx) API 实时查询 Job 状态。
-
-### 查询
-Decoo 支持查询存储 Job 及已存储的文件列表：
-
-**pinJobs** 获取用户的存储 Job 列表。每一次 [pinFile](pinning/pin-file.mdx) 或者 [pinByHash](pinning/pin-by-hash.mdx) 调用，都会生成一个 Pin Job。
-
-**pinList** 获取用户存储的文件列表。
-
-详细信息，请参考本站 [API列表](pinning/pin-file.mdx) 部分。
-
-## API Keys
-
-API Key 是 Decoo 的 API 认证机制。用户注册成功后，系统会自动为用户生成 API Key。目前，一个用户只有一个 API Key，可以用它来访问所有的 API。
+### API Key
+API Key 是 Decoo 的基础认证机制，用户注册成功后，系统会自动为用户生成 API Key。用户登录后可以在 *个人面板* -> *API* -> *API JWT* 中查看。
 
 每一个 API Key其实是一个 [JWT](https://jwt.io/) Token，它代表用户来认证并访问 Decoo API。请务必保管好您的 API Key，不要与他人分享。
 
-## 使用 Decoo API
+### 调用 Decoo Cloud API
 
-Decoo API 的 Base URL 为：https://api.decoo-cloud.cn
+Decoo Cloud API 的 Base URL 为：https://api.decoo-cloud.cn
 
 作为身份认证，您需要在调用 Decoo API 时将您的 API Key 按照以下格式包含在 Header 中：
 ```
@@ -66,3 +48,86 @@ curl -X GET "https://api.decoo-cloud.cn/ping" \
   "Message": "Invalid token"
 }
 ```
+
+
+## Endpoint
+
+### Endpoint 列表
+
+Client 可以调用 Decoo Cloud API 获取 Endpoint 列表：
+```
+curl -X GET "https://api.decoo-cloud.cn/endpoint/list" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json"
+```
+
+返回值如下：
+```json
+ [
+   {
+     "id": 1,
+     "name": "上海",
+     "apiHost": "https://api-sh.decoo-cloud.cn"
+   },
+   ...
+]
+```
+
+
+### Access Token
+
+*Endpoint* 使用 Access Token 来验证用户的 API 请求。Access Token 由 Decoo Cloud 签发，也同样由 Decoo Cloud 来验证。具体流程如下：
+1. Client 调用 Decoo Cloud API，申请 Access Token
+2. Client 调用 *Endpont* API，附上 Access Token 作为认证信息
+3. *Endpoint* 收到 Client 请求后，调用 Decoo Cloud API 来验证 Access Token 是否有效。如果有效，则认证通过，继续处理 Client 请求；否则，返回 401 错误。
+
+另外，Access Token 的有效期为30分钟。Access Token 过期后，Client 应该调用 Decoo Cloud API 申请新的 Access Token。
+
+申请 Access Token：
+```sh
+curl -X GET "https://api.decoo-cloud.cn/oauth/accessToken" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json"
+```
+
+### 数字签名
+
+在调用 Endpoint 的 *pinFile* 或者 *pinByHash* API 上传文件时，用户需要同时附上自己的 *数字签名*，以证明该文件确实由该用户上传。*数字签名* 由用户的 RSA 私钥对文件 CID 进行加密生成。Decoo Cloud 将使用用户的 RSA 公钥对签名进行验证。
+
+#### 获取 RSA 私钥
+
+用户在 Decoo 注册成功后，系统即自动为用户生成 RSA 私钥。用户登录后可以在 *个人面板* -> *API* -> *私钥* 中查看。
+
+#### 获取待上传文件的 IPFS CID
+
+用户可以有多种选择获取文件的 IPFS CID。通常建议的做法是本地安装 [IPFS Desktop](https://docs.ipfs.io/install/ipfs-desktop)，然后调用本地 IPFS 节点的 [/api/v0/add](https://docs.ipfs.io/reference/http/api/#api-v0-add) HTTP API 来获取文件的 CID (注意：在调用该 API 时，建议将 *only-hash* 参数设为 true)。
+
+如果您的 Client App 是基于 JavaScript 开发，一个更好的建议是直接使用 [ipfs-core](https://www.npmjs.com/package/ipfs-core)。它提供了更加轻量级和更加友好的方式帮助您获取文件的 CID。实际上，Decoo 提供的 [Client SDK](https://www.npmjs.com/package/@decooio/sdk) 中的 [getFileHash](https://github.com/decooio/decoo-sdk/blob/main/packages/sdk/src/getFileHash.js) 即是基于 [ipfs-core](https://www.npmjs.com/package/ipfs-core) 构建。
+
+#### 生成 *数字签名*
+
+关于如何使用 RSA 私钥和文件 CID 生成数字签名，您可以参考 [Decoo SDK](https://www.npmjs.com/package/@decooio/sdk) 中的 [相关代码](https://github.com/decooio/decoo-sdk/blob/main/packages/sdk/src/pinFile.js)。
+
+其它编程语言的生成过程与此类似。
+
+### 调用 Endpoint API
+
+调用 Endpoint API 时，必须要使用一个有效的 Access Token 进行认证。如果是文件上传相关的 API，还需要附上用户针对文件 CID 生成的数字签名。比如，调用 *pinFile* 的 curl 命令如下：
+```sh
+curl -X POST "https://api-sh.decoo-cloud.cn/pinning/pinFile" \
+  -H "UserAccessToken: <YOUR_ACCESS_TOKEN>" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@<YOUR_FILE_PATH>" \
+  -F 'decooMetadata="{\"name\": \"我的文件\"}"' \
+  -F "cid=<YOUR_FILE_CID>" \
+  -F "secret=<YOUR_DIGITITAL_SIGNATURE>"
+```
+
+更多详细信息，可以参考相关 API 说明。
+
+## Client SDK
+
+如前所述，Decoo 提供了 JavaScript 版本的 [Client SDK](https://www.npmjs.com/package/@decooio/sdk)，封装了 Endpoint 连接、申请 Access Token、生成 *数字签名* 等功能。用户可以使用它很方便地调用 Endpoint API。
+
+该 SDK 同时支持 NodeJS 和 Browser 环境。详细使用说明可参考 SDK 本身页面。
+

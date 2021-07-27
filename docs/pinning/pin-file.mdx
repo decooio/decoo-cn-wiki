@@ -4,10 +4,17 @@ title: ''
 ---
 
 ## URL
-https://api.decoo-cloud.cn/pinning/pinFile
+```
+https://<endpoint-api-host>/pinning/pinFile
+```
+
+例如，“Decoo 上海” 的 *pinFile* API URL 为：
+```
+https://api-sh.decoo-cloud.cn/pinning/pinFile
+```
 
 ## 描述
-上传文件到 Decoo Cloud，并存储到 IPFS 网络。
+通过 Endpoint 上传文件到 Decoo Cloud 并存储到 IPFS 网络。
 
 :::note
 为了提供和 [pinByHash](pinning/pin-by-hash.mdx) 一致的编程模型，每次调用 *pinFile* 时也会自动生成一个*pin job*。同样地，您也可以调用 [pinJobs](pinning/pin-jobs.mdx) API 来查询这些 *pin job* 的状态。
@@ -18,7 +25,7 @@ POST
 
 ## Headers
 ```
-"Authorization": "Bearer <YOUR_API_KEY>"
+"UserAccessToken": "<YOUR_ACCESS_TOKEN>"
 ```
 
 ## Body
@@ -45,6 +52,18 @@ API 请求的 Body 应该为 *multipart/form-data* 格式，并包含以下键�
 }
 ```
 
+**cid**<br/>
+
+待上传文件的 IPFS CID。您可以通过多种方式获取一个文件的 CID，比如：
+
+- IPFS Desktop。本地安装 [IPFS Desktop](https://docs.ipfs.io/install/ipfs-desktop) 或者 [go-ipfs](https://github.com/ipfs/go-ipfs)，然后调用本地 IPFS 节点的 [/api/v0/add](https://docs.ipfs.io/reference/http/api/#api-v0-add) HTTP API 来获取文件的 CID ((注意：在调用该 API 时，建议将 *only-hash* 参数设为 true))。
+- ipfs-core。通过 [ipfs-core](https://www.npmjs.com/package/ipfs-core) 来获取文件 CID。
+- Decoo SDK。直接使用 Decoo 提供的 [Decoo SDK](https://www.npmjs.com/package/@decooio/sdk) 来获取文件 CID。
+
+**secret**<br/>
+
+用户使用自己的 RSA 私钥针对文件 CID 生成的签名。详情可参考 [API 认证机制](/general/pinningWithApi#数字签名) 的相关部分。
+
 ## Response
 ```json
 {
@@ -56,9 +75,11 @@ API 请求的 Body 应该为 *multipart/form-data* 格式，并包含以下键�
 
 ## Curl 请求示例
 ```sh
-curl -X POST "https://api.decoo-cloud.cn/pinning/pinFile" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+curl -X POST "https://api-sh.decoo-cloud.cn/pinning/pinFile" \
+  -H "UserAccessToken: <YOUR_ACCESS_TOKEN>" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@<YOUR_FILE_PATH>" \
-  -F 'decooMetadata="{\"name\": \"我的文件\"}"'
+  -F 'decooMetadata="{\"name\": \"我的文件\"}"' \
+  -F "cid=<YOUR_FILE_CID>" \
+  -F "secret=<YOUR_DIGITITAL_SIGNATURE>"
 ```

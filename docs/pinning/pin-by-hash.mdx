@@ -4,13 +4,20 @@ title: ''
 ---
 
 ## URL
-https://api.decoo-cloud.cn/pinning/pinByHash
+```
+https://<endpoint-api-host>/pinning/pinByHash
+```
+
+例如，“Decoo 上海” 的 *pinByHash* API URL 为：
+```
+https://api-sh.decoo-cloud.cn/pinning/pinByHash
+```
 
 ## 描述
-通过 CID 异步地上传 IPFS 文件到 Decoo Cloud。每一次 API 调用会生成一个 *pin job*，由 Decoo Cloud 后台定时处理。您可以调用 [pinJobs](pinning/pin-jobs.mdx) API 查询这些 Job 的状态。
+通过 CID 异步地上传 IPFS 文件到 Decoo。每一次 API 调用会生成一个 *pin job*，由 Decoo 后台定时处理。您可以调用 [pinJobs](pinning/pin-jobs.mdx) API 查询这些 Job 的状态。
 
 :::note
-为了确保文件能够成功地拉取并存储到 Decoo Cloud，该文件应该事先 Pin 在某个 IPFS 节点。
+为了确保文件能够成功地拉取并存储到 Decoo，该文件应该事先 Pin 在某个 IPFS 节点。
 :::
 
 ## 请求类型
@@ -18,7 +25,7 @@ POST
 
 ## Headers
 ```
-"Authorization": "Bearer <YOUR_API_KEY>"
+"UserAccessToken": "<YOUR_ACCESS_TOKEN>"
 ```
 
 ## Body
@@ -26,7 +33,8 @@ POST
 Request body 格式如下：
 ```json
 {
-  "hashToPin": "<文件 CID>"
+  "hashToPin": "<文件 CID>",
+  "secret": "<用户私钥针对文件 CID 生成的签名>"
 }
 ```
 
@@ -48,8 +56,8 @@ Request body 格式如下：
 
 ## Curl 请求示例
 ```sh
-curl -X POST "https://api.decoo-cloud.cn/pinning/pinByHash" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+curl -X POST "https://api-sh.decoo-cloud.cn/pinning/pinByHash" \
+  -H "UserAccessToken: <YOUR_ACCESS_TOKEN>" \
   -H "Content-Type: application/json" \
-  -d '{"hashToPin": "<HASH_TO_PIIN>", "decooMetadata": {"name": "我的文件"}}'
+  -d '{"hashToPin": "<HASH_TO_PIIN>", "decooMetadata": {"name": "我的文件"}}, "secret": "<DIGITITAL_SIGNATURE>"'
 ```

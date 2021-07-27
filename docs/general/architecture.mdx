@@ -1,0 +1,20 @@
+---
+id: architecture
+title: ''
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+## 技术架构
+
+Decoo 采取的是 “一云多端” 的技术架构，如下图所示：
+
+<img alt="Decoo架构图" width='85%' src={useBaseUrl('/img/decoo_architecture.png')} />
+
+## Decoo Cloud
+
+Decoo 唯一的帐号管理、访问授权和订单结算中心，部署在云端，提供除了 *上传文件* 之外的全部功能。所有 Endpoint 产生的业务数据，都会同步到 Decoo Cloud。
+
+## Endpoint
+
+位于 IDC 数据中心，提供 *文件上传* 功能。Decoo 会根据自身业务发展，逐步建立更多的 Endpoint。用户可以根据自身地理位置、网络连通性等条件，选择合适的 Endpoint 上传文件到 Decoo。
