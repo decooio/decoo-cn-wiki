@@ -25,11 +25,11 @@ module.exports = {
    */
 
   mySidebar: [
-    {
-      type: 'doc',
-      id: 'introduction',
-      label: '介绍'
-    },
+//     {
+//       type: 'doc',
+//       id: 'introduction',
+//       label: '介绍'
+//     },
 
     {
       type: 'category',
@@ -40,6 +40,11 @@ module.exports = {
           type: 'doc',
           id: 'general/gettingStarted',
           label: '开始'
+        },
+        {
+          type: 'doc',
+          id: 'general/gadget',
+          label: '在首页体验Decoo'
         },
         {
           type: 'doc',
