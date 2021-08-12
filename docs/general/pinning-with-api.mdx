@@ -3,6 +3,9 @@ id: pinningWithApi
 title: ''
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## 简介
 
 Decoo 提供了 HTTP API 以支持用户使用 Decoo 的服务。在 “[一云多端](general/architecture.mdx)” 的架构下，*Decoo Cloud* 和 *Endpoint* 都部署了 HTTP API 以提供不同类型的服务。根据自身职能不同，两者的 API 也采取了不同的认证机制。
@@ -106,9 +109,52 @@ curl -X GET "https://api.decoo-cloud.cn/oauth/accessToken" \
 
 #### 生成 *数字签名*
 
-关于如何使用 RSA 私钥和文件 CID 生成数字签名，您可以参考 [Decoo SDK](https://www.npmjs.com/package/@decooio/sdk) 中的 [相关代码](https://github.com/decooio/decoo-sdk/blob/main/packages/sdk/src/pinFile.js)。
+关于如何使用 RSA 私钥和文件 CID 生成数字签名，如果您使用的编程语言是 JavaScript，可以参考 [Decoo SDK](https://www.npmjs.com/package/@decooio/sdk) 中的 [相关代码](https://github.com/decooio/decoo-sdk/blob/main/packages/sdk/src/pinFile.js)。
 
-其它编程语言的生成过程与此类似。
+其它常见编程语言的示例代码如下：
+
+<Tabs
+  defaultValue="java"
+  values={[
+    { label: 'Java', value: 'java' }
+  ]
+}>
+<TabItem value="java">
+
+```java
+/**
+ <dependency>
+    <groupId>commons-codec</groupId>
+    <artifactId>commons-codec</artifactId>
+    <version>1.15</version>
+  </dependency>
+ */
+
+import org.apache.commons.codec.binary.Base64;
+import javax.crypto.Cipher;
+import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
+
+public class SecretGeneratorSample {
+    private static final String CHARSET = "UTF-8";
+
+    private static final String RSA_ALGORITHM = "RSA";
+
+    private static final int KEY_SIZE = 1024;
+
+    public static String generateSecret(String cid, String key) throws Exception {
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(key.getBytes(CHARSET)));
+        KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+        PrivateKey privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+        return new String(Base64.encodeBase64(cipher.doFinal(cid.getBytes(CHARSET))), CHARSET);
+    }
+}
+```
+
+</TabItem>
+</Tabs>
 
 ### 调用 Endpoint API
 

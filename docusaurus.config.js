@@ -14,6 +14,9 @@ module.exports = {
     locales: ['zh-Hans'],
   },
   themeConfig: {
+    prism: {
+      additionalLanguages: ['java'],
+    },
     navbar: {
       title: 'wiki',
       logo: {
@@ -26,7 +29,6 @@ module.exports = {
       disableSwitch: true,
       respectPrefersColorScheme: false,
     }
-
   },
   presets: [
     [
